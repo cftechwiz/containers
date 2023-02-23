@@ -1,4 +1,4 @@
-FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:0c934c28989f50fa882e33a895eed121a0d1f20580d985352f5c50c6df51b59e as builder
+FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:cf78514ef78901d2a5b256aa0e4e1008d08d95ef1f23ba398735a24290f092a4 as builder
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
@@ -37,7 +37,7 @@ RUN \
         /tmp/opt/emby-server/etc \
         /tmp/opt/emby-server/extra/lib/*
 
-FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:0c934c28989f50fa882e33a895eed121a0d1f20580d985352f5c50c6df51b59e
+FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:cf78514ef78901d2a5b256aa0e4e1008d08d95ef1f23ba398735a24290f092a4
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
