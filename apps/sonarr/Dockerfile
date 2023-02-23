@@ -1,4 +1,4 @@
-FROM ghcr.io/cfallwell/ubuntu:jammy-20221101@sha256:bf2d52a2e698ab9c2e0a1af7f7b70b9806091c5ca21d9f1a4d1c3809f41e5e93
+FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:0c934c28989f50fa882e33a895eed121a0d1f20580d985352f5c50c6df51b59e
 
 ARG TARGETPLATFORM
 ARG VERSION
