@@ -1,4 +1,4 @@
-FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:27c158ec83e7ec4f2721a53ec05ea49353ff636c8791a039ba46d73b5588373f as builder
+FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:2492f776eaca93effc88a54ee36f6b9e9301c41bf3021dee0681f1d5ad28ce23 as builder
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
@@ -208,7 +208,7 @@ RUN \
     && make -j $(nproc) \
     && make DESTDIR=/tmp/comskip-build install
 
-FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:27c158ec83e7ec4f2721a53ec05ea49353ff636c8791a039ba46d73b5588373f
+FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:2492f776eaca93effc88a54ee36f6b9e9301c41bf3021dee0681f1d5ad28ce23
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
