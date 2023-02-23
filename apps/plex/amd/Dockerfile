@@ -61,6 +61,7 @@ RUN apk add  xf86-video-amdgpu linux-firmware-amdgpu --no-cache --update-cache \
 FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:0c934c28989f50fa882e33a895eed121a0d1f20580d985352f5c50c6df51b59e
 
 ARG TARGETPLATFORM
+LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
 ARG VERSION
 ARG CHANNEL
 

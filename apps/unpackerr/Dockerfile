@@ -5,6 +5,7 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT=""
 ARG TARGETPLATFORM
+LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=${TARGETOS} \
@@ -21,6 +22,7 @@ RUN \
 FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:27c158ec83e7ec4f2721a53ec05ea49353ff636c8791a039ba46d73b5588373f
 
 ARG TARGETPLATFORM
+LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
 ARG VERSION
 ARG CHANNEL
 

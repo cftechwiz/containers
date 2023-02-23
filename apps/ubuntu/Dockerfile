@@ -5,6 +5,7 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT=""
 ARG TARGETPLATFORM
+LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=${TARGETOS} \
@@ -22,6 +23,7 @@ FROM public.ecr.aws/docker/library/ubuntu:${VERSION}
 ARG VERSION
 ARG CHANNEL
 ARG TARGETPLATFORM
+LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
 ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
 
 # DEBIAN_FRONTEND: https://askubuntu.com/questions/972516/debian-frontend-environment-variable
