@@ -1,4 +1,4 @@
-FROM ghcr.io/cfallwell/alpine:rolling@sha256:6d6a07c8c747e58846bb3125d4e14bb64cdea6287faef647ba072740892517f1 as builder
+FROM ghcr.io/cfallwell/alpine:rolling@sha256:e6d7c7658a7494a60cabe4f8da8da33d7177421acc6856f8e15a266e061ae8ff as builder
 
 ARG TARGETPLATFORM
 ARG VERSION
@@ -207,7 +207,7 @@ RUN \
     && make -j $(nproc) \
     && make DESTDIR=/tmp/comskip-build install
 
-FROM ghcr.io/cfallwell/alpine:rolling@sha256:6d6a07c8c747e58846bb3125d4e14bb64cdea6287faef647ba072740892517f1
+FROM ghcr.io/cfallwell/alpine:rolling@sha256:e6d7c7658a7494a60cabe4f8da8da33d7177421acc6856f8e15a266e061ae8ff
 
 ARG TARGETPLATFORM
 ARG VERSION
