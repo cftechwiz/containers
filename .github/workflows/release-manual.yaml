@@ -57,6 +57,8 @@ jobs:
     if: needs.generate-build-matrix.outputs.matrix != '[]'
     needs: ["generate-build-matrix"]
     with:
+      driver-opts: |
+          image=moby/buildkit:v0.10.6
       imagesToBuild: "${{ needs.generate-build-matrix.outputs.matrix }}"
       pushImages: "${{ github.event.inputs.push }}"
       updateMetadata: "${{ github.event.inputs.push }}"
