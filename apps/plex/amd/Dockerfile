@@ -57,12 +57,7 @@ RUN apk add  xf86-video-amdgpu linux-firmware-amdgpu --no-cache --update-cache \
  && cp -a /lib/ld-musl-x86_64.so.1 "/output/usr/lib" \
  && cp -a /lib/libz*.so* "/output/usr/lib"
 
-
-<<<<<<< HEAD
-FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:cf78514ef78901d2a5b256aa0e4e1008d08d95ef1f23ba398735a24290f092a4
-=======
 FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:edeac77eccfe2365701fd101d538100caec2466c93557a8e3d8f7fbef67358bd
->>>>>>> fb57d4b (Fix paths)
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
