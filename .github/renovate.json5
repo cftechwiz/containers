@@ -9,7 +9,7 @@
   ],
   "platform": "github",
   "username": "rosey-bot[bot]",
-  "repositories": ["onedr0p/containers"],
+  "repositories": ["cfallwell/containers"],
   "onboarding": false,
   "requireConfig": "optional",
   "gitAuthor": "rosey-bot <98030736+rosey-bot[bot]@users.noreply.github.com>",

@@ -58,7 +58,7 @@ RUN apk add  xf86-video-amdgpu linux-firmware-amdgpu --no-cache --update-cache \
  && cp -a /lib/libz*.so* "/output/usr/lib"
 
 
-FROM ghcr.io/onedr0p/ubuntu:jammy-20221101@sha256:bf2d52a2e698ab9c2e0a1af7f7b70b9806091c5ca21d9f1a4d1c3809f41e5e93
+FROM ghcr.io/cfallwell/ubuntu:jammy-20221101@sha256:bf2d52a2e698ab9c2e0a1af7f7b70b9806091c5ca21d9f1a4d1c3809f41e5e93
 
 ARG TARGETPLATFORM
 ARG VERSION
@@ -71,7 +71,7 @@ ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,utility" \
     PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS="6" \
     PLEX_MEDIA_SERVER_USER="kah" \
     PLEX_MEDIA_SERVER_INFO_VENDOR="Docker" \
-    PLEX_MEDIA_SERVER_INFO_DEVICE="Docker Container (onedr0p)"
+    PLEX_MEDIA_SERVER_INFO_DEVICE="Docker Container (cfallwell)"
 
 # hadolint ignore=DL3008,DL3015,SC2039,SC2086
 RUN \
