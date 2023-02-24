@@ -14,7 +14,7 @@ ENV \
     CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 RUN \
-    curl -fsSL -o /tmp/app.zip "https://github.com/morpheus65535/bazarr/releases/download/v${VERSION}/bazarr.zip" \
+    curl -fsSL -o /tmp/app.zip "https://github.com/morpheus65535/bazarr/releases/download/v1.1.4/bazarr.zip" \
     && unzip -q /tmp/app.zip -d /app \
     && chown -R root:root /app \
     && chmod -R 755 /app \
