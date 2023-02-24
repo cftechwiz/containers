@@ -40,4 +40,4 @@ USER kah
 COPY ./apps/unpackerr/entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]
 
-LABEL org.opencontainers.image.source="https://github.com/davidnewhall/unpackerr"
+LABEL org.opencontainers.image.source="https://github.com/Unpackerr/unpackerr"
