@@ -16,7 +16,7 @@ ENV PATH $GOPATH/bin:$PATH
 #hadolint ignore=DL3018
 RUN \
     apk add --no-cache git go upx \
-    && go install -ldflags="-s -w" "github.com/davidnewhall/unpackerr@v${VERSION}" \
+    && go install -ldflags="-s -w" "https://api.github.com/repositories/132426524@v${VERSION}" \
     && upx --ultra-brute /go/bin/unpackerr
 
 FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:4e256e77366cbea00404a0e79831fc902cfb3c1c8d913f45a3fe0293c885acc3
@@ -40,4 +40,4 @@ USER kah
 COPY ./apps/unpackerr/entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]
 
-LABEL org.opencontainers.image.source="https://github.com/Unpackerr/unpackerr"
+LABEL org.opencontainers.image.source="https://api.github.com/repositories/132426524"
