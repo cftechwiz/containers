@@ -36,6 +36,9 @@ on:
         default: 'false'
         type: string
 
+env:
+  IMAGE_REGISTRY: ghcr.io
+  
 jobs:
   build-and-test:
     name: Build and test
