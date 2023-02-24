@@ -1,4 +1,4 @@
-FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:90fecdee8541cd88de5d51c23dd9778216e5952c0d72bc43c38167f4c4b4def0
+FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:4e256e77366cbea00404a0e79831fc902cfb3c1c8d913f45a3fe0293c885acc3
 
 # https://github.com/linuxserver/docker-homeassistant
 # https://github.com/home-assistant/docker
