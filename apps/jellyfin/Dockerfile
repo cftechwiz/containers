@@ -1,5 +1,5 @@
 
-FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:fb32a0c2d3ac4d0a0faa80e73ac3fe205d35406dfabb4139471b3b1e47bef27e
+FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:0a71ba6b83eff4b04d529800378b94817fc9178131bbcdda12db391fc1643fdd
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
