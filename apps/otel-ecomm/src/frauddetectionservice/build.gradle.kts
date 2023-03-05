@@ -7,7 +7,7 @@ plugins {
     id("java")
     id("idea")
     id("com.google.protobuf") version "0.9.1"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "8.1.0"
 }
 
 group = "io.opentelemetry"
