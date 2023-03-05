@@ -30,7 +30,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("script-runtime"))
     implementation("org.apache.kafka:kafka-clients:3.3.1")
-    implementation("com.google.api.grpc:proto-google-common-protos:2.9.6")
+    implementation("com.google.api.grpc:proto-google-common-protos:2.14.2")
     implementation("io.grpc:grpc-protobuf:${grpcVersion}")
     implementation("io.grpc:grpc-stub:${grpcVersion}")
     implementation("io.grpc:grpc-netty:${grpcVersion}")
