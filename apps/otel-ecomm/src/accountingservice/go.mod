@@ -3,7 +3,7 @@ module github.com/open-telemetry/opentelemetry-demo/src/accountingservice
 go 1.19
 
 require (
-	github.com/Shopify/sarama v1.37.2
+	github.com/Shopify/sarama v1.38.1
 	github.com/sirupsen/logrus v1.9.0
 	go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama v0.36.3
 	go.opentelemetry.io/otel v1.11.0
