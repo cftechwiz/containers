@@ -17,7 +17,7 @@ itsdangerous==2.1.2
 jinja2==3.1.2
 locust==2.14.0
 markupsafe==2.1.1
-msgpack==1.0.4
+msgpack==1.0.5
 opentelemetry-api==1.15.0
 opentelemetry-exporter-otlp-proto-http==1.15.0
 opentelemetry-instrumentation==0.36b0
