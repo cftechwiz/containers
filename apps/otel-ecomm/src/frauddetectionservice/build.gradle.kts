@@ -35,7 +35,7 @@ dependencies {
     implementation("io.grpc:grpc-stub:${grpcVersion}")
     implementation("io.grpc:grpc-netty:${grpcVersion}")
     implementation("io.grpc:grpc-services:${grpcVersion}")
-    implementation("io.opentelemetry:opentelemetry-api:1.19.0")
+    implementation("io.opentelemetry:opentelemetry-api:1.24.0")
     implementation("io.opentelemetry:opentelemetry-sdk:1.19.0")
     implementation("io.opentelemetry:opentelemetry-extension-annotations:1.18.0")
     implementation("org.apache.logging.log4j:log4j-core:2.19.0")
