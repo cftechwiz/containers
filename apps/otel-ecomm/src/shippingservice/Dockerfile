@@ -1,5 +1,5 @@
 # build context will only work from ../../docker-compose.yml
-FROM --platform=${BUILDPLATFORM} rust:1.61 as builder
+FROM --platform=${BUILDPLATFORM} rust:1.68 as builder
 
 ARG TARGETARCH TARGETPLATFORM BUILDPLATFORM
 
