@@ -53,7 +53,7 @@ defmodule Featureflagservice.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
 
-      {:grpcbox, "~> 0.15.0", override: true},
+      {:grpcbox, "~> 0.16.0", override: true},
       {:opentelemetry_exporter, "~> 1.4.0"},
       {:opentelemetry_grpcbox, "~> 0.1"},
       {:opentelemetry_api, "~> 1.2.1"},
