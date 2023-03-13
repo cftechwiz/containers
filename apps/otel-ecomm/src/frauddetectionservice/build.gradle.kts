@@ -59,12 +59,12 @@ tasks.withType<KotlinCompile> {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.21.7"
+        artifact = "com.google.protobuf:protoc:3.22.2"
     }
     plugins {
 
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.50.2"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.53.0"
         }
     }
     generateProtoTasks {
