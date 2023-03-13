@@ -29,7 +29,7 @@ RUN \
 # -----------------------------------------------------------------------------
 
 # https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list
-FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.5-alpine3.15
+FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.8-alpine3.15
 
 WORKDIR /usr/src/app/
 COPY --from=builder /cartservice/ ./
