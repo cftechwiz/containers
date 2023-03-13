@@ -58,7 +58,7 @@ defmodule Featureflagservice.MixProject do
       {:opentelemetry_grpcbox, "~> 0.1"},
       {:opentelemetry_api, "~> 1.2.1"},
       {:opentelemetry, "~> 1.2.1"},
-      {:opentelemetry_phoenix, "~> 1.0.0"},
+      {:opentelemetry_phoenix, "~> 1.1.0"},
       {:opentelemetry_ecto, "~> 1.1.0"}
     ]
   end
