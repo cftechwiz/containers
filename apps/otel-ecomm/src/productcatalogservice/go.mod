@@ -6,7 +6,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
-	google.golang.org/grpc v1.51.0
+	google.golang.org/grpc v1.53.0
 )
 
 require (
