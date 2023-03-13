@@ -29,7 +29,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-java:3.21.7")
     testImplementation(kotlin("test"))
     implementation(kotlin("script-runtime"))
-    implementation("org.apache.kafka:kafka-clients:3.3.1")
+    implementation("org.apache.kafka:kafka-clients:3.4.0")
     implementation("com.google.api.grpc:proto-google-common-protos:2.14.2")
     implementation("io.grpc:grpc-protobuf:${grpcVersion}")
     implementation("io.grpc:grpc-stub:${grpcVersion}")
