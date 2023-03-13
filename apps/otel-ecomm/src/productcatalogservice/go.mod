@@ -10,7 +10,7 @@ require (
 )
 
 require (
-	go.opentelemetry.io/contrib/instrumentation/runtime v0.37.0
+	go.opentelemetry.io/contrib/instrumentation/runtime v0.40.0
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v0.34.0
 	go.opentelemetry.io/otel/metric v0.34.0
 	go.opentelemetry.io/otel/sdk v1.11.2
