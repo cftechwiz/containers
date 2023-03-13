@@ -14,7 +14,7 @@
         "php-di/php-di": "7.0.2",
         "php-di/slim-bridge": "3.3.0",
         "php-http/guzzle7-adapter": "1.0.0",
-        "slim/psr7": "1.5",
+        "slim/psr7": "1.6",
         "slim/slim": "4.10.0"
     },
     "autoload": {
