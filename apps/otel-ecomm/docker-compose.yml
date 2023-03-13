@@ -525,7 +525,7 @@ services:
   # ******************
   # Postgres used by Feature Flag service
   ffs_postgres:
-    image: postgres:14
+    image: postgres:15
     container_name: postgres
     user: postgres
     deploy:
