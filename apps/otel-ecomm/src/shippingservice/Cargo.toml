@@ -21,7 +21,7 @@ opentelemetry = { version = "0.18", features = ["rt-tokio", "trace"] }
 opentelemetry-semantic-conventions = "0.10.0"
 opentelemetry_api = { version = "0.18" }
 opentelemetry-http = "0.7.0"
-opentelemetry-otlp = "0.11.0"
+opentelemetry-otlp = "0.12.0"
 log = "0.4.17"
 simplelog = "0.12"
 reqwest-middleware = "0.2.1"
