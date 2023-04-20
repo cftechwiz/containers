@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM node:19-alpine AS build
+FROM node:20-alpine AS build
 
 WORKDIR /usr/src/app/
 
@@ -22,7 +22,7 @@ RUN apk add --no-cache python3 make g++ && npm ci --omit=dev
 
 # -----------------------------------------------------------------------------
 
-FROM node:19-alpine
+FROM node:20-alpine
 
 USER node
 WORKDIR /usr/src/app/
