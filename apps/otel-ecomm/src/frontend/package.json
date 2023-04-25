@@ -30,7 +30,7 @@
     "@opentelemetry/resource-detector-alibaba-cloud": "0.27.4",
     "@opentelemetry/resource-detector-aws": "1.2.2",
     "@opentelemetry/resource-detector-container": "0.2.2",
-    "@opentelemetry/resource-detector-gcp": "0.28.0",
+    "@opentelemetry/resource-detector-gcp": "0.28.1",
     "cookies-next": "^2.1.1",
     "currency-symbol-map": "5.1.0",
     "dotenv": "16.0.3",
