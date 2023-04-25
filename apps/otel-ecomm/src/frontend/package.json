@@ -14,7 +14,7 @@
     "@grpc/grpc-js": "1.8.12",
     "@opentelemetry/api": "1.4.1",
     "@opentelemetry/auto-instrumentations-node": "0.36.4",
-    "@opentelemetry/auto-instrumentations-web": "0.31.2",
+    "@opentelemetry/auto-instrumentations-web": "0.32.1",
     "@opentelemetry/context-zone": "1.10.1",
     "@opentelemetry/core": "1.10.1",
     "@opentelemetry/exporter-metrics-otlp-grpc": "0.36.1",
