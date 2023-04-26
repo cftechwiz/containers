@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM eclipse-temurin:17.0.6_10-jdk AS builder
+FROM eclipse-temurin:17.0.7_7-jdk AS builder
 
 WORKDIR /usr/src/app/
 
@@ -28,7 +28,7 @@ RUN ./gradlew installDist -PprotoSourceDir=./proto
 
 # -----------------------------------------------------------------------------
 
-FROM eclipse-temurin:17.0.6_10-jre
+FROM eclipse-temurin:17.0.7_7-jre
 
 ARG version=1.23.0
 WORKDIR /usr/src/app/
