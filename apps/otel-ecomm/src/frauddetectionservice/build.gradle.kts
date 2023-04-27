@@ -6,7 +6,7 @@ plugins {
     application
     id("java")
     id("idea")
-    id("com.google.protobuf") version "0.9.2"
+    id("com.google.protobuf") version "0.9.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
