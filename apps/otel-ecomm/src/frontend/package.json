@@ -39,7 +39,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "@tanstack/react-query": "4.28.0",
-    "sharp": "0.31.3",
+    "sharp": "0.32.1",
     "styled-components": "5.3.9",
     "ts-proto": "1.143.0",
     "uuid": "9.0.0"
