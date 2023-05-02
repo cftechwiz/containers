@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.20.2-alpine AS builder
+FROM golang:1.20.4-alpine AS builder
 RUN apk add build-base protobuf-dev protoc
 WORKDIR /usr/src/app/
 
