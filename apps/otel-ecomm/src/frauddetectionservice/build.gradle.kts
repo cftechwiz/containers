@@ -40,7 +40,7 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-extension-annotations:1.18.0")
     implementation("org.apache.logging.log4j:log4j-core:2.20.0")
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("com.google.protobuf:protobuf-kotlin:3.22.2")
+    implementation("com.google.protobuf:protobuf-kotlin:3.23.0")
 
     if (JavaVersion.current().isJava9Compatible) {
         // Workaround for @javax.annotation.Generated
