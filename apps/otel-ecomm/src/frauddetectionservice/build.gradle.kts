@@ -26,7 +26,7 @@ repositories {
 
 
 dependencies {
-    implementation("com.google.protobuf:protobuf-java:3.22.2")
+    implementation("com.google.protobuf:protobuf-java:3.23.0")
     testImplementation(kotlin("test"))
     implementation(kotlin("script-runtime"))
     implementation("org.apache.kafka:kafka-clients:3.4.0")
