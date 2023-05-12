@@ -1,4 +1,4 @@
-FROM ghcr.io/cfallwell/alpine:3.17.2@sha256:4e256e77366cbea00404a0e79831fc902cfb3c1c8d913f45a3fe0293c885acc3
+FROM ghcr.io/cfallwell/alpine:rolling@sha256:c44e5947041c28d862dddcee3129114de08ed74bdb3771a86304b4aa6e712b97
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
