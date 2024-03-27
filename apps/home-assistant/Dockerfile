@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:3.17.3@sha256:72b36e852839020d0c2a146f749eba2a66b22fa9a41ddc3d471462fff7c7d79f
+FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:e6547db8e9fcd506d930729d15c06aefdbac83759cd41967d35e0484ef96f3a2
 
 # https://github.com/linuxserver/docker-homeassistant
 # https://github.com/home-assistant/docker
