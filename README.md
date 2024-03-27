@@ -1,6 +1,6 @@
 # Container images
 
-Welcome to our container images, if looking for a container start by [browsing the container packages](https://github.com/cfallwell?tab=packages&repo_name=containers).
+Welcome to our container images, if looking for a container start by [browsing the container packages](https://github.com/cftechwiz?tab=packages&repo_name=containers).
 
 ## Mission statement
 
@@ -16,10 +16,10 @@ We take do take a similar approach but instead of appending a `-ls69` or `-r420`
 
 | Container                                          | Immutable |
 |----------------------------------------------------|-----------|
-| `ghcr.io/cfallwell/sonarr:rolling`                   | ❌         |
-| `ghcr.io/cfallwell/sonarr:3.0.8.1507`                | ❌         |
-| `ghcr.io/cfallwell/sonarr:rolling@sha256:8053...`    | ✅         |
-| `ghcr.io/cfallwell/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
+| `ghcr.io/cftechwiz/sonarr:rolling`                   | ❌         |
+| `ghcr.io/cftechwiz/sonarr:3.0.8.1507`                | ❌         |
+| `ghcr.io/cftechwiz/sonarr:rolling@sha256:8053...`    | ✅         |
+| `ghcr.io/cftechwiz/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
 
 _If pinning an image to the sha256 digest, tools like [Renovate](https://github.com/renovatebot/renovate) support updating the container on a digest or application version change._
 

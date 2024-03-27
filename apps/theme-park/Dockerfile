@@ -1,7 +1,7 @@
 FROM nginxinc/nginx-unprivileged:1.25.0
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
+LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 

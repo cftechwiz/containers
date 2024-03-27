@@ -1,7 +1,7 @@
-FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:52a6dd1ffd7942a96ec548a83c44063c586d46ba8e79d838931fa43909014be1
+FROM ghcr.io/cftechwiz/ubuntu:jammy-20230126@sha256:52a6dd1ffd7942a96ec548a83c44063c586d46ba8e79d838931fa43909014be1
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
+LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -30,7 +30,7 @@ RUN \
     curl -fsSL "https://download.sonarr.tv/v3/${SONARR__BRANCH}/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux.tar.gz" \
         | tar xzf - -C /app --strip-components=1 \
     && \
-    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cfallwell](https://github.com/cfallwell)\n" "${SONARR__BRANCH}" "${VERSION}" > /app/package_info \
+    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cftechwiz](https://github.com/cftechwiz)\n" "${SONARR__BRANCH}" "${VERSION}" > /app/package_info \
     && \
     gpgconf --kill all \
     && apt-get remove -y gnupg \

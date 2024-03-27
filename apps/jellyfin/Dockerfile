@@ -1,8 +1,8 @@
 
-FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:52a6dd1ffd7942a96ec548a83c44063c586d46ba8e79d838931fa43909014be1
+FROM ghcr.io/cftechwiz/ubuntu:jammy-20230126@sha256:52a6dd1ffd7942a96ec548a83c44063c586d46ba8e79d838931fa43909014be1
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
+LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 

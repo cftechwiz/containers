@@ -5,7 +5,7 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT=""
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
+LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=${TARGETOS} \
@@ -23,7 +23,7 @@ FROM public.ecr.aws/docker/library/alpine:${VERSION}
 ARG VERSION
 ARG CHANNEL
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
+LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
 
 ENV UMASK="0002" \

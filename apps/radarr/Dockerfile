@@ -1,7 +1,7 @@
-FROM ghcr.io/cfallwell/alpine:3.17.3@sha256:b7eba74c519b3320d12b72981b94b43d620630e9ec31c6cbb0865d27bb01ffcc
+FROM ghcr.io/cftechwiz/alpine:3.17.3@sha256:b7eba74c519b3320d12b72981b94b43d620630e9ec31c6cbb0865d27bb01ffcc
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
+LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -26,7 +26,7 @@ RUN \
     rm -rf \
         /app/Radarr.Update \
     && \
-    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cfallwell](https://github.com/cfallwell)\n" "${RADARR__BRANCH}" "${VERSION}" > /app/package_info \
+    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cftechwiz](https://github.com/cftechwiz)\n" "${RADARR__BRANCH}" "${VERSION}" > /app/package_info \
     && chown -R root:root /app \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
