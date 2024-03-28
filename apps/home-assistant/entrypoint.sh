@@ -9,5 +9,5 @@ fi
 
 exec \
     /usr/bin/hass \
-        --config /config \
-        "$@"
+    --config /config \
+    "$@"

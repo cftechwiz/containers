@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d044e17fed9bf744987f1eb4be2079
+FROM ghcr.io/fastlorenzo/alpine:rolling@sha256:b6206e3f8bc7dec38e3d2e8503fcc439425b56a34584e26f97a5da6faf093b76
 
 # https://github.com/linuxserver/docker-homeassistant
 # https://github.com/home-assistant/docker
@@ -6,7 +6,6 @@ FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d0
 # https://github.com/pypa/pip/issues/10788
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -16,11 +15,10 @@ ENV \
     PIP_ROOT_USER_ACTION=ignore \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIPFLAGS="--use-deprecated=legacy-resolver --find-links https://wheels.home-assistant.io/musllinux/" \
+    PIP_BREAK_SYSTEM_PACKAGES=1 \
+    HOMEASSISTANT_WHEELS="https://wheels.home-assistant.io/musllinux/" \
     PYTHONPATH="${PYTHONPATH}:/pip-packages" \
     HOME="/config"
-
-ENV HOME_ASSISTANT__HACS_INSTALL="false"
 
 WORKDIR /tmp
 
@@ -46,9 +44,10 @@ RUN \
         postgresql-libs \
         py3-pip \
         python3 \
+        socat \
         tiff
 
-#hadolint ignore=DL3018,DL3013
+#hadolint ignore=DL3018,DL3013,DL3059
 RUN \
     apk add --no-cache --virtual=.build-deps \
         autoconf \
@@ -65,14 +64,19 @@ RUN \
         libxslt-dev \
         postgresql-dev \
         python3-dev \
-        unixodbc-dev \
-    && \
+        unixodbc-dev
+
+#hadolint ignore=DL3018,DL3013,DL3059
+RUN \
     pip install --upgrade \
         cython \
         pip \
+        pyparsing \
         setuptools \
-        wheel \
-    && \
+        wheel
+
+#hadolint ignore=DL3018,DL3013,DL3059,DL4006
+RUN \
     curl -fsSL "https://github.com/home-assistant/core/archive/${VERSION}.tar.gz" \
         | tar xzf - -C /tmp --strip-components=1 \
     && \
@@ -85,7 +89,7 @@ RUN \
     && \
     NUMPY_VERSION=$(grep "numpy" requirements_all.txt) \
     && \
-    pip install ${PIPFLAGS} \
+    pip install --find-links "${HOMEASSISTANT_WHEELS}" \
         "${NUMPY_VERSION}" \
     && \
     case "${TARGETPLATFORM}" in \
@@ -99,16 +103,16 @@ RUN \
     && \
     HOME_ASSISTANT_BASE=$(curl -fsSL "https://raw.githubusercontent.com/home-assistant/core/${VERSION}/build.yaml" | grep "${ARCH}: " | cut -d ":" -f3) \
     && \
-    pip install ${PIPFLAGS} \
+    pip install --no-index --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
         --requirement "https://raw.githubusercontent.com/home-assistant/docker/${HOME_ASSISTANT_BASE}/requirements.txt" \
     && \
-    pip install ${PIPFLAGS} \
+    pip install --find-links "${HOMEASSISTANT_WHEELS}" \
         --requirement requirements_all.txt \
     && \
-    pip install ${PIPFLAGS} \
+    pip install --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
         homeassistant=="${VERSION}" \
     && \
-    pip install ${PIPFLAGS} \
+    pip install --find-links "${HOMEASSISTANT_WHEELS}" \
         pycups PySwitchbot \
     && \
     apk del --purge .build-deps \
