@@ -22,5 +22,6 @@ RUN \
 FROM scratch
 ENV PATH /usr/local/bin;/bin:$PATH
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
-RUN /usr/local/bin/par2 --help
+SHELL ["/bin/sh", "-c"]
+RUN "/usr/local/bin/par2 --help"
 CMD ["/usr/local/bin/par2"]
