@@ -19,8 +19,8 @@ RUN \
         'linux/amd64') export ARCH='x64' ;; \
         'linux/arm64') export ARCH='arm64' ;; \
     esac \
-    && \
-    curl -fsSL "https://download.sonarr.tv/v4/${SONARR__BRANCH}/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux-musl-${ARCH}.tar.gz" \
+    && \ 
+    curl -fsSL "https://github.com/Sonarr/Sonarr/releases/download/${VERSION}/Sonarr/${SONARR__BRANCH}.${VERSION}.linux-musl-${ARCH}.tar.gz" \
         | tar xzf - -C /app --strip-components=1 \
     && \
     rm -rf \
