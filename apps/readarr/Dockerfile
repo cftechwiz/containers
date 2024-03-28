@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
 
 ARG TARGETPLATFORM
 ARG VERSION
@@ -15,17 +15,17 @@ RUN apk add --no-cache ca-certificates icu-libs libintl sqlite-libs xmlstarlet
 #hadolint ignore=DL3059
 RUN \
     case "${TARGETPLATFORM}" in \
-    'linux/amd64') export ARCH='x64' ;; \
-    'linux/arm64') export ARCH='arm64' ;; \
+        'linux/amd64') export ARCH='x64' ;; \
+        'linux/arm64') export ARCH='arm64' ;; \
     esac \
     && \
     mkdir -p /app/bin \
     && \
     curl -fsSL "https://readarr.servarr.com/v1/update/${READARR__BRANCH}/updatefile?version=${VERSION}&os=linuxmusl&runtime=netcore&arch=${ARCH}" \
-    | tar xzf - -C /app/bin --strip-components=1 \
+        | tar xzf - -C /app/bin --strip-components=1 \
     && \
     rm -rf \
-    /app/bin/Readarr.Update \
+        /app/bin/Readarr.Update \
     && \
     printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cftechwiz](https://github.com/cftechwiz)\n" "${READARR__BRANCH}" "${VERSION}" > /app/package_info \
     && chown -R root:root /app \

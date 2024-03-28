@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # Force using 3.10
 FROM ghcr.io/cftechwiz/alpine:3.19.1
+=======
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+>>>>>>> 3e94160 (Update Apps)
 
 ARG TARGETPLATFORM
 ARG VERSION
@@ -11,6 +15,7 @@ ENV \
     PIP_ROOT_USER_ACTION=ignore \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_BREAK_SYSTEM_PACKAGES=1 \
     CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 RUN \
@@ -22,19 +27,22 @@ RUN \
 
 #hadolint ignore=DL3018,DL3013
 RUN \
-    apk add --no-cache ca-certificates mediainfo ffmpeg python3 py3-lxml py3-numpy py3-gevent py3-cryptography py3-setuptools py3-pillow py3-psycopg2 \
+    apk add --no-cache ca-certificates ffmpeg mediainfo python3 py3-lxml py3-numpy py3-gevent py3-cryptography py3-setuptools py3-psycopg2 py3-pillow unzip \
     && \
-    apk add --no-cache --virtual .build-deps py3-pip python3-dev gcc musl-dev \
+    apk add --no-cache --virtual .build-deps py3-pip gcc python3-dev musl-dev \
     && \
     pip install --upgrade pip \
     && \
     pip install --upgrade \
-        "webrtcvad-wheels>=2.0.10" \
+      "webrtcvad-wheels>=2.0.10" \
     && apk del --purge .build-deps \
     && rm -rf \
         /root/.cache \
         /root/.cargo \
         /tmp/*
+
+# Install unrar
+COPY --from=ghcr.io/linuxserver/unrar:7.0.7 /usr/bin/unrar-alpine /usr/bin/unrar
 
 USER kah
 COPY ./apps/bazarr/entrypoint.sh /entrypoint.sh

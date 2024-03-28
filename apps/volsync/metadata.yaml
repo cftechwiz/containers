@@ -1,10 +1,11 @@
 ---
-app: kubernetes
+app: volsync
 base: false
+semantic_versioning: true
 channels:
-  - name: kubectl
+  - name: stable
     platforms: ["linux/amd64", "linux/arm64"]
-    stable: false
+    stable: true
     tests:
-      enabled: true
+      enabled: false
       type: cli

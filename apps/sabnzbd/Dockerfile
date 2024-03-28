@@ -1,6 +1,4 @@
-# FROM ghcr.io/fastlorenzo/par2cmdline-turbo:1.1.1 as par2cmdline-turbo
-
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
 ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
@@ -19,7 +17,7 @@ ENV SABNZBD__PORT=8080
 # Download source
 RUN \
     curl -fsSL "https://github.com/sabnzbd/sabnzbd/releases/download/${VERSION}/SABnzbd-${VERSION}-src.tar.gz" \
-    | tar xzf - -C /app --strip-components=1 \
+        | tar xzf - -C /app --strip-components=1 \
     && \
     chown -R root:root /app \
     && chmod -R 755 /app \
@@ -30,33 +28,36 @@ RUN \
     # Keep py3-pip installed
     \
     apk add --no-cache \
-    ca-certificates \
-    python3 \
-    py3-pip \
-    p7zip \
+        ca-certificates \
+        python3 \
+        py3-pip \
+        p7zip \
     && \
     apk add --no-cache --virtual=.build-deps \
-    build-base \
-    libffi-dev \
-    openssl-dev \
-    musl-dev \
-    cargo \
-    python3-dev \
+        build-base \
+        libffi-dev \
+        openssl-dev \
+        musl-dev \
+        cargo \
+        python3-dev \
     && \
     pip install --upgrade pip \
     && \
     pip install --upgrade --requirement /app/requirements.txt \
     && apk del --purge .build-deps \
     && rm -rf \
-    /root/.cache \
-    /root/.cargo \
-    /tmp/*
+        /root/.cache \
+        /root/.cargo \
+        /tmp/*
 
 # Install par2cmdline-turbo
-COPY --from=par2cmdline-turbo /usr/local/bin/par2 /usr/local/bin/par2
+COPY --from=ghcr.io/cftechwiz/par2cmdline-turbo:1.1.1 /usr/local/bin/par2 /usr/local/bin/par2
 RUN ln -s /usr/local/bin/par2 /usr/local/bin/par2create \
     && ln -s /usr/local/bin/par2 /usr/local/bin/par2repair \
     && ln -s /usr/local/bin/par2 /usr/local/bin/par2verify
+
+# Install unrar
+COPY --from=ghcr.io/linuxserver/unrar:7.0.7 /usr/bin/unrar-alpine /usr/bin/unrar
 
 USER kah
 COPY ./apps/sabnzbd/sabnzbd.ini /app/sabnzbd.ini

@@ -1,7 +1,6 @@
 ---
-app: cni-plugins
+app: par2cmdline-turbo
 base: false
-semantic_versioning: true
 channels:
   - name: stable
     platforms: ["linux/amd64", "linux/arm64"]

@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
 
 ARG TARGETPLATFORM
 ARG VERSION
@@ -34,13 +34,13 @@ RUN \
     pip install --upgrade pip \
     && \
     pip install --upgrade \
-    plexapi \
-    pycryptodomex \
+        plexapi \
+        pycryptodomex \
     && apk del --purge .build-deps \
     && rm -rf \
-    /root/.cache \
-    /root/.cargo \
-    /tmp/*
+        /root/.cache \
+        /root/.cargo \
+        /tmp/*
 
 USER kah
 COPY ./apps/tautulli/entrypoint.sh /entrypoint.sh
