@@ -1,7 +1,7 @@
-FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d044e17fed9bf744987f1eb4be2079
+# Force using 3.10
+FROM ghcr.io/fastlorenzo/alpine:3.17.3
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -14,7 +14,7 @@ ENV \
     CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 RUN \
-    curl -fsSL -o /tmp/app.zip "https://github.com/morpheus65535/bazarr/releases/download/v1.1.4/bazarr.zip" \
+    curl -fsSL -o /tmp/app.zip "https://github.com/morpheus65535/bazarr/releases/download/v${VERSION}/bazarr.zip" \
     && unzip -q /tmp/app.zip -d /app \
     && chown -R root:root /app \
     && chmod -R 755 /app \
@@ -22,15 +22,14 @@ RUN \
 
 #hadolint ignore=DL3018,DL3013
 RUN \
-    apk add --no-cache ca-certificates ffmpeg python3 py3-lxml py3-numpy py3-gevent py3-cryptography py3-setuptools \
+    apk add --no-cache ca-certificates mediainfo ffmpeg python3 py3-lxml py3-numpy py3-gevent py3-cryptography py3-setuptools py3-pillow py3-psycopg2 \
     && \
-    apk add --no-cache --virtual .build-deps py3-pip gcc python3-dev musl-dev \
+    apk add --no-cache --virtual .build-deps py3-pip python3-dev gcc musl-dev \
     && \
     pip install --upgrade pip \
     && \
     pip install --upgrade \
-        gevent-websocket \
-        webrtcvad-wheels \
+        "webrtcvad-wheels>=2.0.10" \
     && apk del --purge .build-deps \
     && rm -rf \
         /root/.cache \

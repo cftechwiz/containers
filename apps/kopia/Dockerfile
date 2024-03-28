@@ -1,7 +1,6 @@
-FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d044e17fed9bf744987f1eb4be2079
+FROM ghcr.io/fastlorenzo/alpine:rolling@sha256:b6206e3f8bc7dec38e3d2e8503fcc439425b56a34584e26f97a5da6faf093b76
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -17,12 +16,12 @@ RUN apk add --no-cache ca-certificates rclone
 #hadolint ignore=DL3059
 RUN \
     case "${TARGETPLATFORM}" in \
-        'linux/amd64') export ARCH='x64' ;; \
-        'linux/arm64') export ARCH='arm64' ;; \
+    'linux/amd64') export ARCH='x64' ;; \
+    'linux/arm64') export ARCH='arm64' ;; \
     esac \
     && \
     curl -fsSL "https://github.com/kopia/kopia/releases/download/v${VERSION}/kopia-${VERSION}-linux-${ARCH}.tar.gz" \
-        | tar xzf - -C /usr/bin/ --strip-components=1 \
+    | tar xzf - -C /usr/bin/ --strip-components=1 \
     && rm -rf /tmp/*
 
 CMD ["kopia"]

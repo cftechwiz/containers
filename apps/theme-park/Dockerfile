@@ -1,7 +1,6 @@
-FROM nginxinc/nginx-unprivileged:1.25.4
+FROM nginxinc/nginx-unprivileged:1.25.3
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -14,7 +13,7 @@ RUN \
     && \
     apt-get install -qqy --no-install-recommends --no-install-suggests python3 \
     && \
-    curl -fsSL "https://github.com/GilbN/theme.park/archive/${VERSION}.tar.gz" \
+    curl -fsSL "https://github.com/themepark-dev/theme.park/archive/${VERSION}.tar.gz" \
       | tar xzf - -C /tmp --strip-components 1 \
     && \
     python3 /tmp/themes.py \
@@ -36,4 +35,4 @@ USER nginx
 
 WORKDIR ${NGINX_WEB_ROOT}
 
-LABEL org.opencontainers.image.source="https://github.com/GilbN/theme.park"
+LABEL org.opencontainers.image.source="https://github.com/themepark-dev/theme.park"

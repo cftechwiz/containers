@@ -1,11 +1,10 @@
 ARG VERSION
-FROM public.ecr.aws/docker/library/alpine:3.19 as builder
+FROM docker.io/library/alpine:3.19 as builder
 ARG VERSION
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT=""
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=${TARGETOS} \
@@ -17,13 +16,12 @@ ENV PATH $GOPATH/bin:$PATH
 RUN \
     apk add --no-cache go upx \
     && go install -ldflags="-s -w" github.com/drone/envsubst/cmd/envsubst@latest \
-    && upx --ultra-brute /go/bin/envsubst
+    && upx /go/bin/envsubst
 
-FROM public.ecr.aws/docker/library/ubuntu:${VERSION}
+FROM docker.io/library/ubuntu:${VERSION}
 ARG VERSION
 ARG CHANNEL
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
 
 # DEBIAN_FRONTEND: https://askubuntu.com/questions/972516/debian-frontend-environment-variable
@@ -65,6 +63,8 @@ RUN \
     apt-get install -y \
         bash \
         ca-certificates \
+        catatonit \
+        coreutils \
         curl \
         dnsutils \
         iputils-ping \
@@ -73,7 +73,6 @@ RUN \
         locales \
         moreutils \
         pv \
-        tini \
         tzdata \
         vim-tiny \
         unrar \
@@ -85,6 +84,7 @@ RUN \
     && ln -s /usr/bin/vim.tiny /usr/local/bin/vim \
     && ln -s /usr/bin/vim.tiny /usr/local/bin/nano \
     && ln -s /usr/bin/vim.tiny /usr/local/bin/emacs \
+    && ln -s /usr/bin/catatonit /usr/bin/tini \
     && chown -R kah:kah /app \
     && \
     printf "/bin/bash /scripts/greeting.sh\n" >> /etc/bash.bashrc \
@@ -104,4 +104,4 @@ VOLUME ["/config"]
 COPY ./apps/ubuntu/scripts /scripts
 COPY --from=builder /go/bin/envsubst /usr/local/bin/envsubst
 
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
+ENTRYPOINT [ "/usr/bin/catatonit", "--" ]

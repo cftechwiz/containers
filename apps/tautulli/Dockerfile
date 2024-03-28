@@ -1,7 +1,6 @@
-FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d044e17fed9bf744987f1eb4be2079
+FROM ghcr.io/fastlorenzo/alpine:rolling@sha256:b6206e3f8bc7dec38e3d2e8503fcc439425b56a34584e26f97a5da6faf093b76
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -11,6 +10,7 @@ ENV \
     PIP_ROOT_USER_ACTION=ignore \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_BREAK_SYSTEM_PACKAGES=1 \
     CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 ENV TAUTULLI_DOCKER="True"
@@ -34,13 +34,13 @@ RUN \
     pip install --upgrade pip \
     && \
     pip install --upgrade \
-        plexapi \
-        pycryptodomex \
+    plexapi \
+    pycryptodomex \
     && apk del --purge .build-deps \
     && rm -rf \
-        /root/.cache \
-        /root/.cargo \
-        /tmp/*
+    /root/.cache \
+    /root/.cargo \
+    /tmp/*
 
 USER kah
 COPY ./apps/tautulli/entrypoint.sh /entrypoint.sh
