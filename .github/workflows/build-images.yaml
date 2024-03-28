@@ -149,7 +149,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: "${{ steps.app-token.outputs.token }}"
-
       -
         # Add support for more platforms with QEMU (optional)
         # https://github.com/docker/setup-qemu-action
