@@ -4,7 +4,7 @@ ARG VERSION
 WORKDIR /tmp
 ENV LDFLAGS="-static"
 RUN \
-    apk update upgrade add --no-cache \
+    apk add --no-cache \
         autoconf \
         automake \
         build-base \
