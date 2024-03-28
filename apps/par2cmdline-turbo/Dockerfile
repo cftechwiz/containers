@@ -21,7 +21,6 @@ RUN \
     && make check \
     && make install
 
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
+FROM scratch
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
-RUN /usr/local/bin/par2 --help
 CMD ["/usr/local/bin/par2"]
