@@ -1,4 +1,4 @@
-FROM nginxinc/nginx-unprivileged:1.25.0
+FROM nginxinc/nginx-unprivileged:1.25.4
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
