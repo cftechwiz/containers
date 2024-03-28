@@ -1,9 +1,22 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Force using 3.10
 FROM ghcr.io/cftechwiz/alpine:3.19.1
 =======
 FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
 >>>>>>> 3e94160 (Update Apps)
+=======
+<<<<<<< Updated upstream
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+=======
+<<<<<<< HEAD
+# Force using 3.10
+FROM ghcr.io/cftechwiz/alpine:3.19.1
+=======
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+>>>>>>> 3e94160 (Update Apps)
+>>>>>>> Stashed changes
+>>>>>>> 991875e (Update Apps)
 
 ARG TARGETPLATFORM
 ARG VERSION
