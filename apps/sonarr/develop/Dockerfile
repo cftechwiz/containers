@@ -20,10 +20,12 @@ RUN \
     case ${TARGETPLATFORM} in \
         "linux/amd64") ARCH=x64 ;; \
         "linux/arm64") ARCH=arm64 ;; \
+         echo "I'm building for $TARGETPLATFORM" \
+         echo "I am resolving Arch to $ARCH" \
     esac \
     echo "I'm building for $TARGETPLATFORM" \
     echo "I am resolving Arch to $ARCH" \
-    curl -fsSL "https://github.com/Sonarr/Sonarr/releases/download/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux-musl-${ARCH}.tar.gz" \
+    && curl -fsSL "https://github.com/Sonarr/Sonarr/releases/download/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux-musl-${ARCH}.tar.gz" \
         | tar xzf - -C /app --strip-components=1 \
     && \
     rm -rf \
