@@ -1,8 +1,9 @@
-FROM docker.io/library/alpine:3.19 as build
+FROM docker.io/library/alpine:3.19.1 as build
 ARG TARGETARCH
 ARG VERSION
 WORKDIR /tmp
 ENV LDFLAGS="-static"
+ENV DOCKER_BUILDKIT=0
 RUN \
     apk add --no-cache \
         autoconf \
@@ -11,18 +12,16 @@ RUN \
         curl \
         linux-headers \
         musl-dev \
-        bash \
     && \
     curl -fsSL "https://github.com/animetosho/par2cmdline-turbo/archive/refs/tags/v${VERSION}.tar.gz" \
         | tar xzf - -C /tmp --strip-components 1 \
     && ./automake.sh \
     && ./configure \
     && make \
+    && make check \
     && make install
 
 FROM scratch
-ENV PATH /usr/local/bin;/bin:$PATH
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
-SHELL ["/bin/bash", "-c"]
 RUN /usr/local/bin/par2 --help
 CMD ["/usr/local/bin/par2"]
