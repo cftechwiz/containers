@@ -11,6 +11,7 @@ RUN \
         curl \
         linux-headers \
         musl-dev \
+        bash \
     && \
     curl -fsSL "https://github.com/animetosho/par2cmdline-turbo/archive/refs/tags/v${VERSION}.tar.gz" \
         | tar xzf - -C /tmp --strip-components 1 \
@@ -20,7 +21,7 @@ RUN \
     && make install
 
 FROM scratch
-ENV PATH /usr/local/bin:$PATH
+ENV PATH /usr/local/bin;/bin:$PATH
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
-RUN sh /usr/local/bin/par2 --help
+RUN bash /usr/local/bin/par2 --help
 CMD ["/usr/local/bin/par2"]
