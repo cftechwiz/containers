@@ -20,6 +20,7 @@ RUN \
     && make install
 
 FROM scratch
+ENV PATH /usr/local/bin:$PATH
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
-RUN /usr/local/bin/par2 --help
+RUN sh /usr/local/bin/par2 --help
 CMD ["/usr/local/bin/par2"]
