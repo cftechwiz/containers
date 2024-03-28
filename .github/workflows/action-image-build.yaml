@@ -106,13 +106,13 @@ jobs:
         run: sudo apt-get install -y moreutils jo
 
       - name: Setup CUE
-        uses: cue-lang/setup-cue@a93fa358375740cd8b0078f76355512b9208acb1
+        uses: cue-lang/setup-cue@v1.0.1
 
       - name: Setup Goss
         if: ${{ steps.vars.outputs.chan_tests_enabled == 'true' }}
-        uses: e1himself/goss-installation-action@v1.1.0
+        uses: e1himself/goss-installation-action@v1
         with:
-          version: v0.3.21
+          version: v0.4.4
 
       - name: Validate image metadata
         shell: bash
@@ -134,13 +134,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build container image for testing
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           build-args: |-
             VERSION=${{ steps.vars.outputs.chan_upstream_version }}
             CHANNEL=${{ matrix.image.channel }}
           context: .
-          platforms: linux/amd64 # load does not support muti-arch https://github.com/docker/buildx/issues/290
+          platforms: linux/amd64,linux/arm64 # load does not support muti-arch https://github.com/docker/buildx/issues/290
           file: ${{ steps.vars.outputs.chan_dockerfile }}
           load: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ steps.vars.outputs.chan_tag_testing }}
