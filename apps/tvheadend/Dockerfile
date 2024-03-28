@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:e6547db8e9fcd506d930729d15c06aefdbac83759cd41967d35e0484ef96f3a2 as builder
+FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d044e17fed9bf744987f1eb4be2079 as builder
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
@@ -208,7 +208,7 @@ RUN \
     && make -j $(nproc) \
     && make DESTDIR=/tmp/comskip-build install
 
-FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:e6547db8e9fcd506d930729d15c06aefdbac83759cd41967d35e0484ef96f3a2
+FROM ghcr.io/cftechwiz/alpine:3.17.7@sha256:2c14ad54c4d7c770f319263f3f7b7e32d2d044e17fed9bf744987f1eb4be2079
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
