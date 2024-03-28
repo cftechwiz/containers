@@ -18,6 +18,11 @@ ENV \
 RUN apk add --no-cache ca-certificates icu-libs libintl sqlite-libs xmlstarlet
 #hadolint ignore=DL3059
 RUN \
+    case $TARGETARCH in \
+    "amd64") ARCH=x64 ;; \
+    "arm64") ARCH=arm64 ;; \
+    println "arch reports ${ARCH}" \
+    println "arch2 reports $ARCH" \
     curl -fsSL "https://github.com/Sonarr/Sonarr/releases/download/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux-musl-${TARGETARCH}.tar.gz" \
         | tar xzf - -C /app --strip-components=1 \
     && \
