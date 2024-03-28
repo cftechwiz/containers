@@ -1,4 +1,5 @@
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f as build
+# FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f as build
+FROM ghcr.io/cftechwiz/ubuntu:jammy-20231004@sha256:71c26a8612dbda5b930622eeb37968c3bbc73324a6ec17110d7e4ed114ae9d83 as build
 ARG TARGETARCH
 ARG VERSION
 WORKDIR /tmp
