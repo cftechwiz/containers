@@ -1,6 +1,25 @@
-# Container images
+<!---
+NOTE: AUTO-GENERATED FILE
+to edit this file, instead edit its template at: ./github/scripts/templates/README.md.j2
+-->
+<div align="center">
 
-Welcome to our container images, if looking for a container start by [browsing the container packages](https://github.com/cftechwiz?tab=packages&repo_name=containers).
+
+## Containers
+
+_An opinionated collection of container images_
+
+</div>
+
+<div align="center">
+
+![GitHub Repo stars](https://img.shields.io/github/stars/onedr0p/containers?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/onedr0p/containers?style=for-the-badge)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/onedr0p/containers/release-scheduled.yaml?style=for-the-badge&label=Scheduled%20Release)
+
+</div>
+
+Welcome to our container images, if looking for a container start by [browsing the GitHub Packages page for this repo's packages](https://github.com/onedr0p?tab=packages&repo_name=containers).
 
 ## Mission statement
 
@@ -10,16 +29,16 @@ We also try to adhere to a [KISS principle](https://en.wikipedia.org/wiki/KISS_p
 
 ## Tag immutability
 
-The containers built here do not use immutable tags, as least not in the more common way you have seen from [linuxserver.io](https://fleet.linuxserver.io/) or [Bitnami](https://bitnami.com/stacks/containers). 
+The containers built here do not use immutable tags, as least not in the more common way you have seen from [linuxserver.io](https://fleet.linuxserver.io/) or [Bitnami](https://bitnami.com/stacks/containers).
 
-We take do take a similar approach but instead of appending a `-ls69` or `-r420` prefix to the tag we instead insist on pinning to the sha256 digest of the image, while this is not as pretty it is just as functional in making the images immutable.
+We do take a similar approach but instead of appending a `-ls69` or `-r420` prefix to the tag we instead insist on pinning to the sha256 digest of the image, while this is not as pretty it is just as functional in making the images immutable.
 
 | Container                                          | Immutable |
 |----------------------------------------------------|-----------|
-| `ghcr.io/cftechwiz/sonarr:rolling`                   | ❌         |
-| `ghcr.io/cftechwiz/sonarr:3.0.8.1507`                | ❌         |
-| `ghcr.io/cftechwiz/sonarr:rolling@sha256:8053...`    | ✅         |
-| `ghcr.io/cftechwiz/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
+| `ghcr.io/onedr0p/sonarr:rolling`                   | ❌         |
+| `ghcr.io/onedr0p/sonarr:3.0.8.1507`                | ❌         |
+| `ghcr.io/onedr0p/sonarr:rolling@sha256:8053...`    | ✅         |
+| `ghcr.io/onedr0p/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
 
 _If pinning an image to the sha256 digest, tools like [Renovate](https://github.com/renovatebot/renovate) support updating the container on a digest or application version change._
 
@@ -33,14 +52,46 @@ Some applications do not support defining configuration via environment variable
 
     ```yaml
     args:
-      - /entrypoint.sh
-      - --port
-      - "8080"
+        - /entrypoint.sh
+        - --port
+        - "8080"
     ```
 
 ## Configuration volume
 
 For applications that need to have persistent configuration data the config volume is hardcoded to `/config` inside the container. This is not able to be changed in most cases.
+
+## Available Images
+
+Each Image will be built with a `rolling` tag, along with tags specific to it's version. Available Images Below
+
+Container | Channel | Image | Latest Tags
+--- | --- | --- | ---
+[bazarr](https://github.com/cftechwiz/containers/pkgs/container/bazarr) | stable | ghcr.io/cftechwiz/bazarr |![1.4.2](https://img.shields.io/badge/1.4.2-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[cni-plugins](https://github.com/cftechwiz/containers/pkgs/container/cni-plugins) | stable | ghcr.io/cftechwiz/cni-plugins |![1.4.1](https://img.shields.io/badge/1.4.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[home-assistant](https://github.com/cftechwiz/containers/pkgs/container/home-assistant) | stable | ghcr.io/cftechwiz/home-assistant |![2023.6.0](https://img.shields.io/badge/2023.6.0-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[kopia](https://github.com/cftechwiz/containers/pkgs/container/kopia) | stable | ghcr.io/cftechwiz/kopia |![0.16.1](https://img.shields.io/badge/0.16.1-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[kubernetes-kubectl](https://github.com/cftechwiz/containers/pkgs/container/kubernetes-kubectl) | kubectl | ghcr.io/cftechwiz/kubernetes-kubectl |![1.29.3](https://img.shields.io/badge/1.29.3-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[lidarr](https://github.com/cftechwiz/containers/pkgs/container/lidarr) | master | ghcr.io/cftechwiz/lidarr |![1.1.4.3027](https://img.shields.io/badge/1.1.4.3027-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[lidarr-develop](https://github.com/cftechwiz/containers/pkgs/container/lidarr-develop) | develop | ghcr.io/cftechwiz/lidarr-develop |![1.2.3.3267](https://img.shields.io/badge/1.2.3.3267-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[lidarr-nightly](https://github.com/cftechwiz/containers/pkgs/container/lidarr-nightly) | nightly | ghcr.io/cftechwiz/lidarr-nightly |![1.2.4.3270](https://img.shields.io/badge/1.2.4.3270-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[lidarr-plugins]() | plugins | ghcr.io/cftechwiz/lidarr-plugins |
+[prowlarr]() | master | ghcr.io/cftechwiz/prowlarr |
+[prowlarr-develop](https://github.com/cftechwiz/containers/pkgs/container/prowlarr-develop) | develop | ghcr.io/cftechwiz/prowlarr-develop |![1.15.0.4361](https://img.shields.io/badge/1.15.0.4361-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[prowlarr-nightly](https://github.com/cftechwiz/containers/pkgs/container/prowlarr-nightly) | nightly | ghcr.io/cftechwiz/prowlarr-nightly |![1.16.0.4362](https://img.shields.io/badge/1.16.0.4362-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[qbittorrent](https://github.com/cftechwiz/containers/pkgs/container/qbittorrent) | stable | ghcr.io/cftechwiz/qbittorrent |![4.6.4](https://img.shields.io/badge/4.6.4-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[qbittorrent-beta](https://github.com/cftechwiz/containers/pkgs/container/qbittorrent-beta) | beta | ghcr.io/cftechwiz/qbittorrent-beta |![4.6.4](https://img.shields.io/badge/4.6.4-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[radarr](https://github.com/cftechwiz/containers/pkgs/container/radarr) | master | ghcr.io/cftechwiz/radarr |![4.5.2.7388](https://img.shields.io/badge/4.5.2.7388-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[radarr-develop](https://github.com/cftechwiz/containers/pkgs/container/radarr-develop) | develop | ghcr.io/cftechwiz/radarr-develop |![4.6.0.7439](https://img.shields.io/badge/4.6.0.7439-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[radarr-nightly](https://github.com/cftechwiz/containers/pkgs/container/radarr-nightly) | nightly | ghcr.io/cftechwiz/radarr-nightly |![4.6.1.7452](https://img.shields.io/badge/4.6.1.7452-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[readarr-develop](https://github.com/cftechwiz/containers/pkgs/container/readarr-develop) | develop | ghcr.io/cftechwiz/readarr-develop |![0.3.21.2475](https://img.shields.io/badge/0.3.21.2475-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[readarr-nightly](https://github.com/cftechwiz/containers/pkgs/container/readarr-nightly) | nightly | ghcr.io/cftechwiz/readarr-nightly |![0.3.21.2475](https://img.shields.io/badge/0.3.21.2475-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[sabnzbd](https://github.com/cftechwiz/containers/pkgs/container/sabnzbd) | stable | ghcr.io/cftechwiz/sabnzbd |![4.2.3](https://img.shields.io/badge/4.2.3-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[sonarr](https://github.com/cftechwiz/containers/pkgs/container/sonarr) | main | ghcr.io/cftechwiz/sonarr |![3.0.10.1567](https://img.shields.io/badge/3.0.10.1567-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[sonarr-develop](https://github.com/cftechwiz/containers/pkgs/container/sonarr-develop) | develop | ghcr.io/cftechwiz/sonarr-develop |![4.0.0.535](https://img.shields.io/badge/4.0.0.535-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[tautulli](https://github.com/cftechwiz/containers/pkgs/container/tautulli) | master | ghcr.io/cftechwiz/tautulli |![2.13.4](https://img.shields.io/badge/2.13.4-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+[theme-park](https://github.com/cftechwiz/containers/pkgs/container/theme-park) | stable | ghcr.io/cftechwiz/theme-park |![1.13.10](https://img.shields.io/badge/1.13.10-blue?style=flat-square) ![rolling](https://img.shields.io/badge/rolling-blue?style=flat-square)
+
 
 ## Contributing
 
@@ -81,7 +132,8 @@ Containers here can be **deprecated** at any point, this could be for any reason
 4. The **maintenance burden** of keeping the container here **is too bothersome**
 
 **Note**: Deprecated containers will remained published to this repo for 6 months after which they will be pruned.
-
 ## Credits
 
 A lot of inspiration and ideas are thanks to the hard work of [hotio.dev](https://hotio.dev/) and [linuxserver.io](https://www.linuxserver.io/) contributors.
+
+    
