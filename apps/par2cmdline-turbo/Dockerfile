@@ -23,5 +23,5 @@ RUN \
 
 FROM scratch
 COPY --from=build /usr/local/bin/par2 /usr/local/bin/par2
-RUN /usr/local/bin/par2 --help
+RUN -it /usr/local/bin/par2 --help
 CMD ["/usr/local/bin/par2"]
