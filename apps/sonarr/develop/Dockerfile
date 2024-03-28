@@ -18,15 +18,9 @@ RUN apk add --no-cache ca-certificates icu-libs libintl sqlite-libs xmlstarlet
 #hadolint ignore=DL3059
 RUN \
     case "${TARGETPLATFORM}" in \
-        'linux/amd64') export ARCH='x64' ;; \
-        'linux/arm64') export ARCH='arm64' ;; \
+        'linux/amd64') ARCH='x64' ;; \
+        'linux/arm64') ARCH='arm64' ;; \
     esac \
-    && \
-    printf "I'm building for TARGETPLATFORM=${TARGETPLATFORM}" \
-    && printf ", TARGETARCH=${TARGETARCH}" \
-    && printf ", TARGETVARIANT=${TARGETVARIANT} \n" \
-    && printf "With uname -s : " && uname -s \
-    && printf "and  uname -m : " && uname -m \
     && \
     curl -fsSL "https://github.com/Sonarr/Sonarr/releases/download/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux-musl-${ARCH}.tar.gz" \
         | tar xzf - -C /app --strip-components=1 \
