@@ -3,17 +3,17 @@
 # Force using 3.10
 FROM ghcr.io/cftechwiz/alpine:3.19.1
 =======
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
 >>>>>>> 3e94160 (Update Apps)
 =======
 <<<<<<< Updated upstream
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
 =======
 <<<<<<< HEAD
 # Force using 3.10
 FROM ghcr.io/cftechwiz/alpine:3.19.1
 =======
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3fbc581cb0fe29830376161ae026e2a765dcc11e1747477fe9ebf155720b8638
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
 
 
 ARG TARGETPLATFORM
