@@ -1,5 +1,5 @@
 # Force using 3.10
-FROM ghcr.io/fastlorenzo/alpine:3.17.3
+FROM ghcr.io/cftechwiz/alpine:3.17.3
 
 ARG TARGETPLATFORM
 ARG VERSION
