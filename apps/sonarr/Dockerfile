@@ -1,7 +1,7 @@
-FROM ghcr.io/cftechwiz/ubuntu:jammy-20230126@sha256:52a6dd1ffd7942a96ec548a83c44063c586d46ba8e79d838931fa43909014be1
+FROM ghcr.io/cfallwell/ubuntu:jammy-20230126@sha256:52a6dd1ffd7942a96ec548a83c44063c586d46ba8e79d838931fa43909014be1
 
 ARG TARGETPLATFORM
-LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
+LABEL org.opencontainers.image.source https://github.com/cfallwell/containers
 ARG VERSION
 ARG CHANNEL
 
@@ -13,11 +13,6 @@ ENV \
 
 # hadolint ignore=DL3008,DL3015,SC2086
 RUN \
-    case "${TARGETPLATFORM}" in \
-        'linux/amd64') export ARCH='x64' ;; \
-        'linux/arm64') export ARCH='arm64' ;; \
-    esac \
-    && \
     apt-get -qq update \
     && apt-get -qq install -y gnupg \
     && \
@@ -32,10 +27,10 @@ RUN \
         libmediainfo0v5 \
         xmlstarlet \
     && \
-    curl -fsSL "https://services.sonarr.tv/v1/download/main/${SONARR__BRANCH}?version=${VERSION}&os=linux&arch=${ARCH}" \
+    curl -fsSL "https://download.sonarr.tv/v3/${SONARR__BRANCH}/${VERSION}/Sonarr.${SONARR__BRANCH}.${VERSION}.linux.tar.gz" \
         | tar xzf - -C /app --strip-components=1 \
     && \
-    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cftechwiz](https://github.com/cftechwiz)\n" "${SONARR__BRANCH}" "${VERSION}" > /app/package_info \
+    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[cfallwell](https://github.com/cfallwell)\n" "${SONARR__BRANCH}" "${VERSION}" > /app/package_info \
     && \
     gpgconf --kill all \
     && apt-get remove -y gnupg \
