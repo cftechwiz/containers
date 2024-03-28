@@ -1,223 +1,351 @@
----
-name: "Action: Image Build"
+name: "Image Build"
 
 on:
   workflow_call:
     inputs:
-      imagesToBuild:
-        description: |-
-          Pass a json string with the images and channels to build. e.g.:
-            [
-              {
-                "app": "sonarr",
-                "channel": "main"
-              },
-              {
-                "app": "sonarr",
-                "channel": "develop"
-              }
-            ]
+      appsToBuild:
         required: false
         type: string
-        default: ''
-
+        default: ""
+      channelsToBuild:
+        required: false
+        type: string
+        default: ""
       pushImages:
         required: false
-        default: 'false'
-        type: string
-
-      updateMetadata:
+        default: false
+        type: boolean
+      sendNotifications:
         required: false
-        default: 'false'
-        type: string
-
-      sendNotification:
+        default: false
+        type: boolean
+      force:
         required: false
-        default: 'false'
-        type: string
+        default: true
+        type: boolean
+        description: Force rebuild
+    secrets:
+      BOT_APP_ID:
+        description: The App ID of the GitHub App
+        required: true
+      BOT_APP_PRIVATE_KEY:
+        description: The private key of the GitHub App
+        required: true
 
-env:
-  IMAGE_REGISTRY: ghcr.io
-  
 jobs:
-  build-and-test:
-    name: Build and test
+  prepare:
+    name: Prepare to Build
     runs-on: ubuntu-latest
-    if: inputs.imagesToBuild != '' && inputs.imagesToBuild != '[]'
-    strategy:
-      matrix:
-        image: ["${{ fromJson(inputs.imagesToBuild) }}"]
-      fail-fast: false
+    outputs:
+      matrices: ${{ steps.prepare-matrices.outputs.matrices }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Lowercase repository owner
+        shell: bash
+        run: echo "LOWERCASE_REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
         with:
-          fetch-depth: 1
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Setup workflow Variables
-        id: vars
-        shell: bash
-        run: |-
-          container_base=$(jq '.base' ./apps/${{ matrix.image.app }}/metadata.json)
-          echo "chan_build_date=$(date --rfc-3339=seconds --utc)" >> $GITHUB_OUTPUT
-
-          chan_config=$(jq --arg chan "${{ matrix.image.channel }}" '(.channels | .[] | select(.name == $chan))' ./apps/${{ matrix.image.app }}/metadata.json)
-          chan_stable=$(jq --raw-output '.stable' <<< "${chan_config}")
-
-          chan_platforms=$(jq --raw-output '.platforms | join(",")' <<< "${chan_config}") && \
-              echo "chan_platforms=${chan_platforms}" >> $GITHUB_OUTPUT
-          chan_tests_enabled=$(jq --raw-output '.tests.enabled' <<< "${chan_config}") && \
-              echo "chan_tests_enabled=${chan_tests_enabled}" >> $GITHUB_OUTPUT
-          chan_tests_type=$(jq --raw-output '.tests.type' <<< "${chan_config}") && \
-              echo "chan_tests_type=${chan_tests_type}" >> $GITHUB_OUTPUT
-
-          chan_upstream_version=$(bash ./.github/scripts/upstream.sh "${{ matrix.image.app }}" "${{ matrix.image.channel }}") && \
-              echo "chan_upstream_version=${chan_upstream_version}" >> $GITHUB_OUTPUT
-
-          if [[ "${chan_tests_enabled}" == true && "${chan_tests_type}" == "cli" ]]; then
-              echo "chan_goss_args=tail -f /dev/null" >> $GITHUB_OUTPUT
-          fi
-
-          if [[ "${container_base}" == true ]]; then
-              echo "chan_label_type=org.opencontainers.image.base" >> $GITHUB_OUTPUT
-          else
-              echo "chan_label_type=org.opencontainers.image" >> $GITHUB_OUTPUT
-          fi
-
-          if test -f "./apps/${{ matrix.image.app }}/${{ matrix.image.channel }}/Dockerfile"; then
-              echo "chan_dockerfile=./apps/${{ matrix.image.app }}/${{ matrix.image.channel }}/Dockerfile" >> $GITHUB_OUTPUT
-              echo "chan_goss_config=./apps/${{ matrix.image.app }}/${{ matrix.image.channel }}/goss.yaml" >> $GITHUB_OUTPUT
-          else
-              echo "chan_dockerfile=./apps/${{ matrix.image.app }}/Dockerfile" >> $GITHUB_OUTPUT
-              echo "chan_goss_config=./apps/${{ matrix.image.app }}/ci/goss.yaml" >> $GITHUB_OUTPUT
-          fi
-
-          if [[ "${chan_stable}" == true ]]; then
-              echo "chan_tag_testing=${{ matrix.image.app }}:testingz" >> $GITHUB_OUTPUT
-              echo "chan_tag_rolling=${{ matrix.image.app }}:rolling" >> $GITHUB_OUTPUT
-              echo "chan_tag_version=${{ matrix.image.app }}:${chan_upstream_version}" >> $GITHUB_OUTPUT
-          else
-              echo "chan_tag_testing=${{ matrix.image.app }}-${{ matrix.image.channel }}:testingz" >> $GITHUB_OUTPUT
-              echo "chan_tag_rolling=${{ matrix.image.app }}-${{ matrix.image.channel }}:rolling" >> $GITHUB_OUTPUT
-              echo "chan_tag_version=${{ matrix.image.app }}-${{ matrix.image.channel }}:${chan_upstream_version}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Setup Tools
-        shell: bash
-        run: sudo apt-get install -y moreutils jo
-
-      - name: Setup CUE
-        uses: cue-lang/setup-cue@v1.0.1
-
-      - name: Setup Goss
-        if: ${{ steps.vars.outputs.chan_tests_enabled == 'true' }}
-        uses: e1himself/goss-installation-action@v1
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          version: v0.4.4
+          token: "${{ steps.app-token.outputs.token }}"
 
-      - name: Validate image metadata
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          cache: pip
+
+      - name: Install Python Requirements
         shell: bash
-        run: cue vet --schema '#Spec' ./apps/${{ matrix.image.app }}/metadata.json ./metadata.rules.cue
+        run: pip install -r ./.github/scripts/requirements.txt && pip freeze
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Prepare Matrices
+        id: prepare-matrices
+        env:
+          TOKEN: ${{ steps.app-token.outputs.token }}
+        shell: bash
+        run: |
+          if [[ -z "${{ inputs.appsToBuild }}" ]]; then
+              matrices=$(python ./.github/scripts/prepare-matrices.py "all" "${{ inputs.pushImages }}" "${{ inputs.force }}")
+          else
+            if [[ -z "${{ inputs.channelsToBuild }}" ]]; then
+              matrices=$(python ./.github/scripts/prepare-matrices.py "${{ inputs.appsToBuild }}" "${{ inputs.pushImages }}" "${{ inputs.force }}")
+            else
+              matrices=$(python ./.github/scripts/prepare-matrices.py "${{ inputs.appsToBuild }}" "${{ inputs.pushImages }}" "${{ inputs.force }}" "${{ inputs.channelsToBuild }}")
+            fi
+          fi
+          echo "matrices=${matrices}" >> $GITHUB_OUTPUT
+          echo "${matrices}"
+
+  build-platform-images:
+    name: Build/Test ${{ matrix.image.name }} (${{ matrix.image.platform }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    if: ${{ toJSON(fromJSON(needs.prepare.outputs.matrices).imagePlatforms) != '[]' && toJSON(fromJSON(needs.prepare.outputs.matrices).imagePlatforms) != '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          ["${{ fromJSON(needs.prepare.outputs.matrices).imagePlatforms }}"]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Lowercase repository owner
+        shell: bash
+        run: echo "LOWERCASE_REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Log Matrix Input
+        shell: bash
+        run: |
+          cat << EOF
+          ${{ toJSON(matrix.image)}}
+          EOF
+
+      - name: Validate Matrix Input
+        shell: bash
+        run: |
+          if [[ -z "${{ matrix.image.name }}" ]]; then
+              echo "image.name is empty"
+              exit 1
+          fi
+          if [[ -z "${{ matrix.image.version }}" ]]; then
+              echo "image.version is empty"
+              exit 1
+          fi
+          if [[ -z "${{ matrix.image.context }}" ]]; then
+              echo "image.context is empty"
+              exit 1
+          fi
+          if [[ -z "${{ matrix.image.dockerfile }}" ]]; then
+              echo "image.dockerfile is empty"
+              exit 1
+          fi
+          if [[ -z "${{ matrix.image.platform }}" ]]; then
+              echo "image.platform is empty"
+              exit 1
+          fi
+          if [[ -z "${{ matrix.image.tests_enabled }}" ]]; then
+              echo "image.tests_enabled is empty"
+              exit 1
+          fi
+          echo "${{ matrix.image.name }}" | grep -E "[a-zA-Z0-9_\.\-]+" || "Image Name is invalid"
+          echo "${{ matrix.image.version }}" | grep -E "[a-zA-Z0-9_\.\-]+" || "Image Version is invalid"
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
 
       - name: Setup Docker Buildx
-        id: buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Setup GHCR
-        if: ${{ inputs.pushImages == 'true' }}
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Build container image for testing
+      - name: Setup Goss
+        if: ${{ matrix.image.tests_enabled }}
+        uses: e1himself/goss-installation-action@v1
+        with:
+          version: latest
+
+      - name: Prepare Build Outputs
+        id: prepare-build-outputs
+        shell: bash
+        run: |
+          if [[ "${{ inputs.pushImages }}" == "true" ]]; then
+              image_name="ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}"
+              outputs="type=image,name=${image_name},push-by-digest=true,name-canonical=true,push=true"
+          else
+              image_name="ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}:zztesting"
+              outputs="type=docker,name=${image_name},push=false"
+          fi
+          echo "image_name=${image_name}" >> $GITHUB_OUTPUT
+          echo "outputs=${outputs}" >> $GITHUB_OUTPUT
+
+      - name: Build Image
         uses: docker/build-push-action@v5
+        id: build
         with:
           build-args: |-
-            VERSION=${{ steps.vars.outputs.chan_upstream_version }}
+            VERSION=${{ matrix.image.version }}
+            REVISION=${{ github.sha }}
             CHANNEL=${{ matrix.image.channel }}
+          # TODO: Use ${{ matrix.image.context }}, requires updates to all dockerfiles :-(
           context: .
-          platforms: linux/amd64,linux/arm64 # load does not support muti-arch https://github.com/docker/buildx/issues/290
-          file: ${{ steps.vars.outputs.chan_dockerfile }}
-          load: false
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ steps.vars.outputs.chan_tag_testing }}
+          platforms: ${{ matrix.image.platform }}
+          file: ${{ matrix.image.dockerfile }}
+          outputs: ${{ steps.prepare-build-outputs.outputs.outputs }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          labels: |-
+            org.opencontainers.image.title=${{ matrix.image.name }}
+            org.opencontainers.image.url=https://ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}
+            org.opencontainers.image.source=https://github.com/${{ env.LOWERCASE_REPO_OWNER }}/containers
+            org.opencontainers.image.version=${{ matrix.image.version }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=${{ env.LOWERCASE_REPO_OWNER }}
 
-      - name: Run Goss tests
+      - name: Run Goss Tests
         id: dgoss
-        if: ${{ steps.vars.outputs.chan_tests_enabled == 'true' }}
-        shell: bash
+        if: ${{ matrix.image.tests_enabled }}
         env:
           CONTAINER_RUNTIME: docker
-          GOSS_FILE: ${{ steps.vars.outputs.chan_goss_config }}
+          GOSS_FILE: ${{ matrix.image.goss_config }}
           GOSS_OPTS: --retry-timeout 60s --sleep 2s --color --format documentation
           GOSS_SLEEP: 2
           GOSS_FILES_STRATEGY: cp
           CONTAINER_LOG_OUTPUT: goss_container_log_output
-        run: dgoss run ghcr.io/${{ github.repository_owner }}/${{ steps.vars.outputs.chan_tag_testing }} ${{ steps.vars.outputs.chan_goss_args }}
+        shell: bash
+        run: |
+          if [[ '${{ inputs.pushImages }}' == 'true' ]]; then
+              image_name="${{ steps.prepare-build-outputs.outputs.image_name }}@${{ steps.build.outputs.digest }}"
+          else
+              image_name="${{ steps.prepare-build-outputs.outputs.image_name }}"
+          fi
+          dgoss run ${image_name} ${{ matrix.image.goss_args }}
 
-      - name: Build all platforms
-        id: release
-        uses: docker/build-push-action@v5
+      - name: Export Digest
+        id: export-digest
+        if: ${{ inputs.pushImages }}
+        shell: bash
+        run: |
+          mkdir -p /tmp/${{ matrix.image.name }}/digests
+          digest="${{ steps.build.outputs.digest }}"
+          echo "${{ matrix.image.name }}" > "/tmp/${{ matrix.image.name }}/digests/${digest#sha256:}"
+
+      - name: Upload Digest
+        if: ${{ inputs.pushImages}}
+        uses: actions/upload-artifact@v4
         with:
-          build-args: |-
-            VERSION=${{ steps.vars.outputs.chan_upstream_version }}
-            CHANNEL=${{ matrix.image.channel }}
-          labels: |-
-            ${{ steps.vars.outputs.chan_label_type }}.created="${{ steps.vars.outputs.chan_build_date }}"
-            ${{ steps.vars.outputs.chan_label_type }}.title="${{ matrix.image.app }} (${{ matrix.image.channel }})"
-            ${{ steps.vars.outputs.chan_label_type }}.version="${{ steps.vars.outputs.chan_upstream_version }}"
-            ${{ steps.vars.outputs.chan_label_type }}.authors="Colin Fallwell <colinfallwell@gmail.com>"
-            ${{ steps.vars.outputs.chan_label_type }}.url="https://github.com/cftechwiz/containers/apps/${{ matrix.image.app }}"
-            ${{ steps.vars.outputs.chan_label_type }}.build.url="https://github.com/cftechwiz/containers/actions/runs/${{ github.run_id }}"
-            ${{ steps.vars.outputs.chan_label_type }}.documentation="https://github.com/cftechwiz/containers/apps/${{ matrix.image.app }}/README.md"
-            ${{ steps.vars.outputs.chan_label_type }}.revision="${{ github.sha }}"
-          context: .
-          platforms: ${{ steps.vars.outputs.chan_platforms }}
-          file: ${{ steps.vars.outputs.chan_dockerfile }}
-          push: ${{ inputs.pushImages == 'true' }}
-          tags: |-
-            ghcr.io/${{ github.repository_owner }}/${{ steps.vars.outputs.chan_tag_rolling }}
-            ghcr.io/${{ github.repository_owner }}/${{ steps.vars.outputs.chan_tag_version }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          name: ${{ matrix.image.name }}-${{ matrix.image.target_os }}-${{ matrix.image.target_arch }}
+          path: /tmp/${{ matrix.image.name }}/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    name: Merge ${{ matrix.image.name }}
+    runs-on: ubuntu-latest
+    needs: ["prepare", "build-platform-images"]
+    # Always run merge, as the prior matrix is all or nothing. We test for prior step failure
+    # in the "Test Failed Bit" step. This ensures if one app fails, others can still complete.
+    if: ${{ always() && inputs.pushImages && toJSON(fromJSON(needs.prepare.outputs.matrices).images) != '[]' && toJSON(fromJSON(needs.prepare.outputs.matrices).images) != '' }}
+    strategy:
+      matrix:
+        image: ["${{ fromJSON(needs.prepare.outputs.matrices).images }}"]
+      fail-fast: false
+    steps:
+      - name: Lowercase repository owner
+        shell: bash
+        run: echo "LOWERCASE_REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Download Digests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ${{ matrix.image.name }}-*
+          merge-multiple: true
+          path: /tmp/${{ matrix.image.name }}
+
+      - name: Ensure all platforms were built
+        id: ensure-platforms
+        shell: bash
+        run: |
+          EXPECTED_COUNT=$(cat << EOF | jq ". | length"
+          ${{ toJSON(matrix.image.platforms) }}
+          EOF
+          )
+          ACTUAL_COUNT=$(ls -1 /tmp/${{ matrix.image.name }}/digests | wc -l)
+          if [[ $EXPECTED_COUNT != $ACTUAL_COUNT ]]; then
+              echo "Expected $EXPECTED_COUNT platforms, but only found $ACTUAL_COUNT"
+              echo "Expected: ${{ toJSON(matrix.image.platforms) }}"
+              echo "Actual: $(cat /tmp/${{ matrix.image.name }}/digests/*)"
+              exit 1
+          fi
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Log Files
+        working-directory: /tmp/${{ matrix.image.name }}/digests
+        shell: bash
+        run: |
+          ls -la
+          cat *
+
+      - name: Merge Manifests
+        id: merge
+        working-directory: /tmp/${{ matrix.image.name }}/digests
+        env:
+          TAGS: ${{ toJSON(matrix.image.tags) }}
+        shell: bash
+        run: |
+          docker buildx imagetools create $(jq -cr '. | map("-t ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{matrix.image.name}}:" + .) | join(" ")'  <<< "$TAGS") \
+              $(printf 'ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}@sha256:%s ' *)
+
+      - name: Inspect image
+        id: inspect
+        shell: bash
+        run: |
+          docker buildx imagetools inspect ghcr.io/${{ env.LOWERCASE_REPO_OWNER }}/${{ matrix.image.name }}:${{ matrix.image.tags[0] }}
 
       - name: Build successful
         id: build-success
-        if: ${{ always() && steps.release.outcome == 'success' }}
-        run: |-
-          echo "message=🎉 ${{ matrix.image.app }}-${{ matrix.image.channel }} (${{ steps.vars.outputs.chan_upstream_version }})" >> $GITHUB_OUTPUT
+        if: ${{ always() && steps.merge.outcome == 'success' && steps.inspect.outcome == 'success' }}
+        shell: bash
+        run: |
+          echo "message=🎉 ${{ matrix.image.name }} (${{ matrix.image.tags[0] }})" >> $GITHUB_OUTPUT
           echo "color=0x00FF00" >> $GITHUB_OUTPUT
 
       - name: Build failed
         id: build-failed
-        if: ${{ always() && (steps.release.outcome == 'failure' || steps.dgoss.outcome == 'failure') }}
-        run: |-
-          echo "message=💥 ${{ matrix.image.app }}-${{ matrix.image.channel }} (${{ steps.vars.outputs.chan_upstream_version }})" >> $GITHUB_OUTPUT
+        if: ${{ always() && (steps.merge.outcome == 'failure' || steps.inspect.outcome == 'failure') }}
+        shell: bash
+        run: |
+          echo "message=💥 ${{ matrix.image.name }} (${{ matrix.image.tags[0] }})" >> $GITHUB_OUTPUT
           echo "color=0xFF0000" >> $GITHUB_OUTPUT
 
-      - name: Send Discord Webhook
-        uses: sarisia/actions-status-discord@v1
-        if: ${{ always() && inputs.sendNotification == 'true' }}
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: ${{ steps.build-failed.outputs.message || steps.build-success.outputs.message }}
-          color: ${{ steps.build-failed.outputs.color }}
-          username: GitHub Actions
+      # - name: Send Discord Webhook
+      #   uses: sarisia/actions-status-discord@v1
+      #   if: ${{ always() && inputs.sendNotifications == 'true' }}
+      #   with:
+      #     webhook: ${{ secrets.DISCORD_WEBHOOK }}
+      #     title: ${{ steps.build-failed.outputs.message || steps.build-success.outputs.message }}
+      #     color: ${{ steps.build-failed.outputs.color || steps.build-success.outputs.color }}
+      #     username: GitHub Actions
 
   # Summarize matrix https://github.community/t/status-check-for-a-matrix-jobs/127354/7
   build_success:
     name: Build matrix success
     runs-on: ubuntu-latest
-    needs:
-      - build-and-test
+    needs: ["prepare", "merge"]
     if: ${{ always() }}
     steps:
       - name: Check build matrix status
-        if: ${{ (inputs.imagesToBuild != '' && inputs.imagesToBuild != '[]') && (needs.build-and-test.result != 'success') }}
+        if: ${{ (inputs.appsToBuild != '' && inputs.appsToBuild != '[]') && (needs.merge.result != 'success' && needs.merge.result != 'skipped' && needs.prepare.result != 'success') }}
+        shell: bash
         run: exit 1
+        
