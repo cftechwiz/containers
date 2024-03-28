@@ -21,11 +21,11 @@ RUN \
     case '${TARGETPLATFORM}' in \
         'linux/amd64') 'export BUILD_ARCH=x64' ;; \
         'linux/arm64') 'export BUILD_ARCH=arm64' ;; \
-         echo "I'm building for $TARGETPLATFORM" \
-         echo "I detect targetarch as $TARGETARCH" \
-         echo "I detect targetos as $TARGETOS" \
-         echo "I detect targetarch as $TARGETARCH"
-         echo "I am resolving BUILD_ARCH as $BUILD_ARCH" \
+         println "I'm building for $TARGETPLATFORM" \
+         println "I detect targetarch as $TARGETARCH" \
+         println "I detect targetos as $TARGETOS" \
+         println "I detect targetarch as $TARGETARCH" \
+         println "I am resolving BUILD_ARCH as $BUILD_ARCH" \
     esac; \
     echo "I'm building for $TARGETPLATFORM" \
     echo "I am resolving Arch to $BUILD_ARCH" \
