@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:rolling@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
+FROM ghcr.io/cftechwiz/alpine:rolling@sha256:aa908777191f6a1501881849e39476c0c547e2c35c88cac76680f794a4e27483
 ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
