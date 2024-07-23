@@ -19,7 +19,7 @@ RUN \
     && go install -ldflags="-s -w" "github.com/Unpackerr/unpackerr@v${VERSION}" \
     && upx --ultra-brute /go/bin/unpackerr
 
-FROM ghcr.io/cftechwiz/alpine:3.19.1@sha256:3eaee8b2beb9139e09d80bbf5842fa747042bcd67e91100c9dc44e5b367f069f
+FROM ghcr.io/cftechwiz/alpine:3.19.3@sha256:44f72e9dc33eb2aa711138f0108a43fdea6d9c0472e6a9c84ac01863ddece33a
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
