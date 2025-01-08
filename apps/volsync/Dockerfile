@@ -18,7 +18,7 @@ RUN \
     && go install -a -ldflags "-X=main.volsyncVersion=v${VERSION}" github.com/backube/volsync@v${VERSION} \
     && upx /go/bin/volsync
 
-FROM docker.io/library/alpine:3.21.0
+FROM docker.io/library/alpine:3.21.2
 ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
