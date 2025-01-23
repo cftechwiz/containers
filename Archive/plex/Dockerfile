@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/ubuntu:jammy-20240808@sha256:16b902d98ca9240287e92595aab01e56a6bf19ec405c49cca374c29480ce3ca0
+FROM ghcr.io/cftechwiz/ubuntu:jammy-20240911.1@sha256:92dbb33449a6cf8f6bd41a49134b37f55437c4d30a13bdf4bdedc56fa67c17f6
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
