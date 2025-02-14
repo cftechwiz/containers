@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/alpine:3.19.4@sha256:f84600f199cd9ae3c2197520db62603c5381d97f549d566af135d06cb91fe5da
+FROM ghcr.io/cftechwiz/alpine:3.19.7@sha256:5e4c3d60e12e02aec17ad61f20543438c219e5ddef72a2313ee3a6e820cd9519
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
