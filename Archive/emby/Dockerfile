@@ -1,4 +1,4 @@
-FROM ghcr.io/cftechwiz/ubuntu:jammy-20240808@sha256:16b902d98ca9240287e92595aab01e56a6bf19ec405c49cca374c29480ce3ca0 as builder
+FROM ghcr.io/cftechwiz/ubuntu:jammy-20250714@sha256:74818a92d9aa2516aa1eb14be3f7082d679cc25924a34164e67e3a8cfc4eb4ae as builder
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
@@ -37,7 +37,7 @@ RUN \
         /tmp/opt/emby-server/etc \
         /tmp/opt/emby-server/extra/lib/*
 
-FROM ghcr.io/cftechwiz/ubuntu:jammy-20240808@sha256:16b902d98ca9240287e92595aab01e56a6bf19ec405c49cca374c29480ce3ca0
+FROM ghcr.io/cftechwiz/ubuntu:jammy-20250714@sha256:74818a92d9aa2516aa1eb14be3f7082d679cc25924a34164e67e3a8cfc4eb4ae
 
 ARG TARGETPLATFORM
 LABEL org.opencontainers.image.source https://github.com/cftechwiz/containers
