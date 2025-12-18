@@ -1,5 +1,5 @@
 ARG VERSION
-FROM docker.io/library/alpine:3.21 as builder
+FROM docker.io/library/alpine:3.23 as builder
 ARG VERSION
 ARG TARGETOS
 ARG TARGETARCH
@@ -18,7 +18,7 @@ RUN \
     && go install -a -ldflags "-X=main.volsyncVersion=v${VERSION}" github.com/backube/volsync@v${VERSION} \
     && upx /go/bin/volsync
 
-FROM docker.io/library/alpine:3.21.0
+FROM docker.io/library/alpine:3.23.2
 ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
